@@ -36,8 +36,8 @@ continue
 # Logging inside the project
 
 ``` C 
-// Each file define log modules, 
-// consisting of a name a flag whether logging for this module is enabled. 
+// Each file defines log modules, 
+// consisting of a name and a flag whether logging for this module is enabled. 
 // This log module is passed when logging a message 
 static char bar = 1;
 
@@ -45,6 +45,7 @@ static const log_module_t foo = {
   "foo",
   &bar
 };
+// A file can define multiple log modules at once for fine granular configuration
 // You can enable of disable module on a per file basis
 
 // Initate the logger in main via 
