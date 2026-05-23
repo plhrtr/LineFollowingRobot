@@ -43,15 +43,13 @@ static char bar = 1;
 
 static const log_module_t foo = {
   "foo",
-  &bar};
-
+  &bar
+};
 // You can enable of disable module on a per file basis
 
 // Initate the logger in main via 
 logger_init(LOG_DEBUG, CSV, UART);
-
 // Or use the default values (LOG_WARNING, PLAIN_TEXT, UART)
-
 
 // Use the makro do log a message. The message is a formatted string
 // This will append the time, filename and line number for you
