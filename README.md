@@ -32,7 +32,29 @@ break main
 # Start debugging 
 continue
 ```
+
 # Logging inside the project
 
-TODO
+``` C 
+// Each file define log modules, 
+// consisting of a name a flag whether logging for this module is enabled. 
+// This log module is passed when logging a message 
+static char bar = 1;
+
+static const log_module_t foo = {
+  "foo",
+  &bar};
+
+// You can enable of disable module on a per file basis
+
+// Initate the logger in main via 
+logger_init(LOG_DEBUG, CSV, UART);
+
+// Or use the default values (LOG_WARNING, PLAIN_TEXT, UART)
+
+
+// Use the makro do log a message. The message is a formatted string
+// This will append the time, filename and line number for you
+LOGGER_LOG(LOG_DEBUG, foo, "Foo: %s, %u", var1, var2);
+```
 
