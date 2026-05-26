@@ -6,7 +6,7 @@
 // -------------------------------
 // LOGGING SETTINGS FOR THIS FILE
 // -------------------------------
-static char scheduler_logging_enabled = 1;
+static char scheduler_logging_enabled = 0;
 
 static const log_module_t scheduler_log_module = {"scheduler_log_module",
                                                   &scheduler_logging_enabled};
@@ -41,29 +41,36 @@ void scheduler_unschedule(uint16_t task_index) {
 
   uint32_t mask = (size_t)1 << task_index;
 
-  task_bitmap |= ~mask;
+  task_bitmap &= ~mask;
 };
 
 void scheduler_run() {
   while (1) {
+
     uint32_t current_tick = HAL_GetTick();
 
     for (size_t i = 0; i < MAX_TASKS; i++) {
       uint32_t mask = (uint32_t)1 << i;
-      task_t task = tasks[i];
 
-      // Check if task should run and if a task is scheduled at this index
-      if (task_bitmap & mask && current_tick >= task.next_run) {
-        task.task_run();
+      if (!(task_bitmap & mask)) {
+        continue;
+      }
 
-        if (current_tick >= task.next_run + scheduler_tolerance) {
+      task_t *task = &tasks[i];
+
+      uint32_t elapsed = current_tick - task->next_run;
+
+      if ((elapsed & 0x80000000UL) == 0) {
+        if (elapsed > scheduler_tolerance) {
           LOGGER_LOG(LOG_WARNING, scheduler_log_module,
-                     "Task %s: should %u, ran %u", task.name, task.next_run,
-                     current_tick);
+                     "Task %s: delayed by %u ms (should: %u, ran: %u)",
+                     task->name, elapsed, task->next_run, current_tick);
         }
 
-        if (task.period != UINT32_MAX) {
-          tasks[i].next_run = current_tick + task.period;
+        task->task_run();
+
+        if (task->period != UINT32_MAX) {
+          task->next_run = current_tick + task->period;
         } else {
           scheduler_unschedule(i);
         }

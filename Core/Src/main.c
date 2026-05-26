@@ -18,13 +18,14 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "adc.h"
-#include "calibration_orchestrator/calibrators/wheel_encoder_calibrator.h"
+#include "calibration/orchestrator.h"
 #include "dma.h"
 #include "gpio.h"
 #include "logger.h"
 #include "scheduler.h"
 #include "services/adc_serive.h"
 #include "services/motor_service.h"
+#include "services/touch_sensor_service.h"
 #include "services/wheel_encoder_service.h"
 #include "stm32l4xx_hal.h"
 #include "stm32l4xx_hal_adc.h"
@@ -33,6 +34,22 @@
 #include "usart.h"
 
 void SystemClock_Config(void);
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
+  switch (GPIO_Pin) {
+  case switch_left_Pin:
+    touch_sensor_handle(TOUCH_SENSOR_LEFT);
+    break;
+  case switch_middle_Pin:
+    touch_sensor_handle(TOUCH_SENSOR_MIDDLE);
+    break;
+  case switch_right_Pin:
+    touch_sensor_handle(TOUCH_SENSOR_RIGHT);
+    break;
+  default:
+    break;
+  }
+}
 
 /**
  * @brief  The application entry point.
@@ -59,6 +76,7 @@ int main(void) {
   /* Initialize user defined services and functions */
   motors_init();
   logger_init(LOG_DEBUG, PLAIN_TEXT, UART);
+  touch_sensor_init();
 
   /* Schedule services that should run at startup. */
   /* Only does can schedule new tasks */
@@ -66,16 +84,19 @@ int main(void) {
   task_t adc_task = {"adc", &adc_update, ADC_SERVICE_CONVERSION_PERIOD, 0};
   scheduler_schedule(adc_task);
 
-  task_t calibrator_task = {"calib", &wheel_encoder_calibrate,
-                            ADC_SERVICE_CONVERSION_PERIOD, 0};
-  scheduler_schedule(calibrator_task);
-
   task_t wheel_encoder_task = {"wheel_enc", &wheel_encoder_update,
                                WHEEL_ENCODER_SAMPLING_PERIOD, 0};
   scheduler_schedule(wheel_encoder_task);
 
   task_t logger_task = {"logger", &logger_run, LOGGER_RUN_PERIOD, 0};
   scheduler_schedule(logger_task);
+
+  task_t calibration_task = {"calib", &calibration_orchestrator_run,
+                             CALIBRATION_ORCHESTRATOR_PERIOD, 0};
+  int id = scheduler_schedule(calibration_task);
+  calibration_orchestrator_set_unscheduling_id(id);
+
+  HAL_Delay(2000);
 
   /* Infinite loop */
   scheduler_run();

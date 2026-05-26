@@ -1,7 +1,7 @@
 #ifndef WHEEL_ENCODER_CALIBRATOR_H
 #define WHEEL_ENCODER_CALIBRATOR_H
 
-#include "calibration_orchestrator/calibration_orchestrator.h"
+#include "calibration/orchestrator.h"
 
 /**
  * Calibration function for the wheel encoder
@@ -15,6 +15,6 @@ void wheel_encoder_calibrate();
  * Get the state of the wheel encoder calibrator
  * @return - The state of the calibrator
  */
-calibration_states_t wheel_encoder_calibrator_get_state();
+calibration_state_t wheel_encoder_calibrator_get_state();
 
 #endif // WHEEL_ENCODER_CALIBRATOR_H

@@ -7,9 +7,9 @@
 // -------------------------------
 // LOGGING SETTINGS FOR THIS FILE
 // -------------------------------
-static char distance_logging_enabled = 1;
-static char velocity_logging_enabled = 1;
-static char wheel_encoder_logging_enabled = 1;
+static char distance_logging_enabled = 0;
+static char velocity_logging_enabled = 0;
+static char wheel_encoder_logging_enabled = 0;
 
 static const log_module_t wheel_encoder_log_module = {
     "wheel_encoder_log_module", &wheel_encoder_logging_enabled};

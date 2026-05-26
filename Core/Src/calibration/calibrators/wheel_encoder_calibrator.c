@@ -1,20 +1,11 @@
-#include "calibration_orchestrator/calibrators/wheel_encoder_calibrator.h"
-#include "calibration_orchestrator/calibration_orchestrator.h"
+#include "calibration/calibrators/wheel_encoder_calibrator.h"
+#include "calibration/orchestrator.h"
 #include "logger.h"
 #include "services/adc_serive.h"
 #include "services/motor_service.h"
 #include "services/wheel_encoder_service.h"
 #include "stm32l4xx_hal.h"
 #include <stdint.h>
-
-// -------------------------------
-// LOGGING SETTINGS FOR THIS FILE
-// -------------------------------
-static char wheel_encoder_calibrator_logging_enabled = 1;
-
-static const log_module_t wheel_encoder_calibrator_log_module = {
-    "wheel_encoder_calibrator_log_module",
-    &wheel_encoder_calibrator_logging_enabled};
 
 // The calibration duration
 static const uint32_t CALIBRATION_DURATION = 800;
@@ -28,7 +19,7 @@ static const float DEAD_BAND_ZONE = 0.05f;
 // The tick where the previous state started
 static uint32_t calibration_previous_state_tick = 0;
 
-static calibration_states_t calibration_state = NOT_STARTED;
+static calibration_state_t calibration_state = NOT_STARTED;
 
 static uint32_t left_encoder_max = 0;
 static uint32_t left_encoder_min = UINT32_MAX;
@@ -96,18 +87,12 @@ void wheel_encoder_calibrate() {
 
       if (current_distance.distance_left == EXPECTED_NUMBER_OF_REVOLUTIONS &&
           current_distance.distance_right == EXPECTED_NUMBER_OF_REVOLUTIONS) {
-        LOGGER_LOG(LOG_INFO, wheel_encoder_calibrator_log_module,
-                   "Calibration successful");
-
         calibration_state = CALIBRATED;
       } else {
-        LOGGER_LOG(LOG_WARNING, wheel_encoder_calibrator_log_module,
-                   "Verification failed");
-
         calibration_state = FAILED;
       }
       wheel_encoder_reset();
-      motors_drive_straight(100);
+      motors_stop();
     }
     break;
   default:
@@ -115,6 +100,6 @@ void wheel_encoder_calibrate() {
   }
 }
 
-calibration_states_t wheel_encoder_calibrator_get_state() {
+calibration_state_t wheel_encoder_calibrator_get_state() {
   return calibration_state;
 }
