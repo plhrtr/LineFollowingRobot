@@ -1,8 +1,6 @@
 #include "services/adc_service.h"
 #include "adc.h"
 #include "stm32l4xx_hal_adc.h"
-#include "stm32l4xx_hal_uart.h"
-#include "usart.h"
 #include <stdint.h>
 #include <stdio.h>
 
@@ -27,9 +25,5 @@ void adc_update() {
   if (conversion_done_flag) {
     conversion_done_flag = 0;
     HAL_ADC_Start_DMA(&hadc1, buffer, 6);
-
-    // char buf[100];
-    // int len = sprintf(buf, "%lu\n", adc[BATTERY]);
-    // HAL_UART_Transmit(&huart2, (uint8_t *)buf, len, 1000000);
   }
 }

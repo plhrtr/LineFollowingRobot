@@ -12,7 +12,7 @@ static uint32_t current_swirl_duration = 0;
 static bool is_swirling_left = false;
 
 /* Configuration */
-static const uint32_t INITIAL_SWIRL_DURATION_MS = 200;
+static const uint32_t INITIAL_SWIRL_DURATION_MS = 250;
 static const uint32_t MAX_SWIRL_DURATION_MS = 2000;
 
 void line_searching_run() {
@@ -31,7 +31,7 @@ void line_searching_run() {
     current_swirl_duration = INITIAL_SWIRL_DURATION_MS;
     start_time = current_time;
     is_swirling_left = true;
-    motors_drive_curve(40, 100, LEFT);
+    motors_drive_curve(50, 100, LEFT);
     return;
   }
 
@@ -44,7 +44,7 @@ void line_searching_run() {
     }
     current_swirl_duration = next;
     start_time = current_time;
-    motors_drive_curve(40, 100, is_swirling_left ? LEFT : RIGHT);
+    motors_drive_curve(50, 100, is_swirling_left ? LEFT : RIGHT);
   }
 }
 

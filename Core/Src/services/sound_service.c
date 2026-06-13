@@ -43,17 +43,34 @@ static void play_sound(uint16_t frequency, uint32_t duration) {
   TIM1->CCR3 = 0;
 }
 
-#define MELODY_LENGTH 8
+#define START_UP_MELODY_LENGTH 8
 
-static const uint16_t theme_frequencies[MELODY_LENGTH] = {294, 0,   294, 0,
-                                                          147, 220, 350, 500};
+static const uint16_t start_up_theme_frequencies[START_UP_MELODY_LENGTH] = {
+    294, 0, 294, 0, 147, 220, 350, 500};
 
-static const uint16_t theme_durations[MELODY_LENGTH] = {120, 120, 120, 150,
-                                                        200, 200, 200, 500};
+static const uint16_t start_up_theme_durations[START_UP_MELODY_LENGTH] = {
+    120, 120, 120, 150, 200, 200, 200, 500};
 
 void sound_service_start_up_sound() {
-  for (size_t i = 0; i < MELODY_LENGTH; i++) {
-    play_sound(theme_frequencies[i], theme_durations[i]);
+  for (size_t i = 0; i < START_UP_MELODY_LENGTH; i++) {
+    play_sound(start_up_theme_frequencies[i], start_up_theme_durations[i]);
+
+    play_sound(0, 50);
+  }
+};
+
+#define LOW_BATTERY_MELODY_LENGTH 2
+
+static const uint16_t low_battery_theme_frequencies[LOW_BATTERY_MELODY_LENGTH] =
+    {200, 100};
+
+static const uint16_t low_battery_theme_durations[LOW_BATTERY_MELODY_LENGTH] = {
+    300, 300};
+
+void sound_service_low_battery_sound() {
+  for (size_t i = 0; i < LOW_BATTERY_MELODY_LENGTH; i++) {
+    play_sound(low_battery_theme_frequencies[i],
+               low_battery_theme_durations[i]);
 
     play_sound(0, 50);
   }

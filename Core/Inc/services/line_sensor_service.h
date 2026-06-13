@@ -38,4 +38,9 @@ bool line_sensor_is_on_line();
  */
 bool line_sensor_line_ended();
 
+/**
+ * Check whether the line has ended abruptly
+ */
+bool line_sensor_line_abruptly_ended();
+
 #endif // !LINE_SENSOR_SERVICE_H

@@ -1,5 +1,7 @@
 #include "services/line_sensor_service.h"
 #include "services/adc_service.h"
+#include "services/motor_service.h"
+#include "stm32l4xx_hal.h"
 #include "usart.h"
 #include <stdbool.h>
 #include <stdint.h>
@@ -18,9 +20,10 @@ static line_sensor_reading_t last_reading;
 static line_sensor_thresholds_t thresholds;
 static float last_error;
 static bool is_on_line;
+static bool line_ended_abruptly;
 
 // Threshold whether a sensor reading is considered on the line
-static const float LINE_DETECTED_THRESHOLD = 0.35;
+static const float LINE_ENDED_ABRUPTLY_LAST_ERROR = 0.3f;
 
 /**
  * Normalize the given value via the given thresholds
@@ -102,7 +105,7 @@ static float calculate_error(line_sensor_reading_t reading) {
       normalize(reading.right_sensor_value, thresholds.right_lower,
                 thresholds.right_upper);
 
-  float numerator = (-2.0f * left_normalized) + (2.0f * right_normalized);
+  float numerator = (-2.5f * left_normalized) + (2.5f * right_normalized);
   float denominator = left_normalized + middle_normalized + right_normalized;
 
   if (denominator <= 0.0f) {
@@ -138,16 +141,28 @@ float line_sensor_get_error() {
   float right_n = normalize(new_reading.right_sensor_value,
                             thresholds.right_lower, thresholds.right_upper);
 
-  is_on_line = (left_n > LINE_DETECTED_THRESHOLD) ||
-               (middle_n > LINE_DETECTED_THRESHOLD) ||
-               (right_n > LINE_DETECTED_THRESHOLD);
+  is_on_line = (left_n > 0.2f) && (middle_n > 0.7f) && (right_n > 0.2f);
+
+  if (left_n > 0.25f || middle_n > 0.25f || right_n > 0.25f) {
+    line_ended_abruptly = false;
+  }
+
+  if (middle_n < 0.6f && last_error < LINE_ENDED_ABRUPTLY_LAST_ERROR &&
+      last_error > -LINE_ENDED_ABRUPTLY_LAST_ERROR) {
+    line_ended_abruptly = true;
+    return 0.0f;
+  }
 
   last_reading = new_reading;
 
   float error = calculate_error(new_reading);
+
+  debug_print(error, left_n, middle_n, right_n);
 
   /* Calculate and return error */
   return error;
 }
 
 bool line_sensor_is_on_line() { return is_on_line; }
+
+bool line_sensor_line_abruptly_ended() { return line_ended_abruptly; }

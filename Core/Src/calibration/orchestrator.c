@@ -3,7 +3,9 @@
 #include "calibration/calibrators/wheel_encoder_calibrator.h"
 #include "mission_control/mission_control.h"
 #include "scheduler.h"
+#include "services/adc_service.h"
 #include "services/led_service.h"
+#include "services/sound_service.h"
 #include "services/touch_sensor_service.h"
 #include "stm32l4xx_hal.h"
 #include <stdint.h>
@@ -41,6 +43,11 @@ void calibration_orchestrator_run() {
     touch_sensor_subscription_t subscription = {&touch_sensor_callback,
                                                 TOUCH_SENSOR_MIDDLE};
     touch_sensor_unsubscribe_id = touch_sensor_subscribe(subscription);
+
+    // Check the battery limit
+    if (adc[BATTERY] < 3100) {
+      sound_service_low_battery_sound();
+    }
 
     current_state = STARTING_TASK;
 

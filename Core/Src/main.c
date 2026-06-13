@@ -30,9 +30,13 @@
 #include "stm32l4xx_hal.h"
 #include "stm32l4xx_hal_adc.h"
 #include "stm32l4xx_hal_adc_ex.h"
+#include "stm32l4xx_hal_def.h"
+#include "stm32l4xx_hal_dma.h"
 #include "stm32l4xx_hal_gpio.h"
 #include "tim.h"
 #include "usart.h"
+#include <stdint.h>
+#include <stdio.h>
 
 void SystemClock_Config(void);
 
