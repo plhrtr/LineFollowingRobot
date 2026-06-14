@@ -3,23 +3,21 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-/* Schmitt trigger boundaries */
+// Schmitt trigger boundaries
 static uint16_t left_schmitt_trigger_upper = 3200;
 static uint16_t left_schmitt_trigger_lower = 2200;
 static uint16_t right_schmitt_trigger_upper = 3500;
 static uint16_t right_schmitt_trigger_lower = 3000;
 
-/* Current distances for both wheels */
+// Current distances for both wheels
 static distance_t current_distance = {0, 0};
 
-/* Last schmitt states (use bool for clarity) */
+// Last schmitt trigger states
 static bool last_state_right_schmitt_trigger = false;
 static bool last_state_left_schmitt_trigger = false;
 
 const uint16_t WHEEL_ENCODER_SAMPLING_PERIOD = 2;
 
-/* Inline helpers avoid duplicated logic and keep type safety by updating struct
- * fields directly. */
 static inline void process_left_encoder(uint16_t value) {
   if (value > left_schmitt_trigger_upper) {
     if (!last_state_left_schmitt_trigger) {
@@ -66,10 +64,7 @@ void wheel_encoder_update() {
   process_right_encoder(right_encoder_value);
 }
 
-distance_t wheel_encoder_get_current_distance() {
-  /* return a copy (value semantics) */
-  return current_distance;
-}
+distance_t wheel_encoder_get_current_distance() { return current_distance; }
 
 void wheel_encoder_reset() {
   current_distance.distance_left = 0;

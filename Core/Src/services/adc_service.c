@@ -7,9 +7,7 @@
 const uint16_t ADC_SERVICE_CONVERSION_PERIOD = 2;
 
 static char conversion_done_flag = 1;
-
 static volatile uint32_t buffer[6];
-
 volatile uint32_t adc[6];
 
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc1) {

@@ -1,19 +1,18 @@
 #include "mission_control/handlers/line_searching.h"
+#include "mission_control/handlers/line_following.h"
 #include "mission_control/mission_control.h"
-#include "services/adc_service.h"
 #include "services/line_sensor_service.h"
 #include "services/motor_service.h"
 #include "stm32l4xx_hal.h"
 #include <stdbool.h>
 #include <stdint.h>
 
+static const uint32_t INITIAL_SWIRL_DURATION_MS = 200;
+static const uint32_t MAX_SWIRL_DURATION_MS = 2000;
+
 static uint32_t start_time = 0;
 static uint32_t current_swirl_duration = 0;
 static bool is_swirling_left = false;
-
-/* Configuration */
-static const uint32_t INITIAL_SWIRL_DURATION_MS = 250;
-static const uint32_t MAX_SWIRL_DURATION_MS = 2000;
 
 void line_searching_run() {
   uint32_t current_time = HAL_GetTick();
@@ -22,6 +21,7 @@ void line_searching_run() {
   // Check whether the line is found
   if (line_sensor_is_on_line()) {
     motors_stop();
+    line_following_init();
     mission_control_set_state(LINE_FOLLOWING);
     return;
   }

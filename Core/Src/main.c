@@ -31,12 +31,10 @@
 #include "stm32l4xx_hal_adc.h"
 #include "stm32l4xx_hal_adc_ex.h"
 #include "stm32l4xx_hal_def.h"
-#include "stm32l4xx_hal_dma.h"
 #include "stm32l4xx_hal_gpio.h"
 #include "tim.h"
 #include "usart.h"
 #include <stdint.h>
-#include <stdio.h>
 
 void SystemClock_Config(void);
 
@@ -85,8 +83,8 @@ int main(void) {
   motors_init();
   touch_sensor_init();
 
-  /* Schedule services that should run at startup. */
-  /* Only does can schedule new tasks */
+  // Schedule services that should run at startup.
+  // WARNING: Only does can schedule new tasks!
 
   task_t adc_task = {"adc", &adc_update, ADC_SERVICE_CONVERSION_PERIOD, 0};
   scheduler_schedule(adc_task);
@@ -100,10 +98,10 @@ int main(void) {
   int id = scheduler_schedule(calibration_task);
   calibration_orchestrator_set_unscheduling_id(id);
 
-  /* Startup sound */
+  // Play the start up sound
   sound_service_start_up_sound();
 
-  /* Infinite loop */
+  // Infinite loop
   scheduler_run();
 }
 

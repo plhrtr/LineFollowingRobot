@@ -36,4 +36,4 @@ extern volatile uint32_t adc[6];
  */
 void adc_update();
 
-#endif // ADC_SERVICE_H
+#endif // !ADC_SERVICE_H

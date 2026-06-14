@@ -25,7 +25,7 @@ typedef enum {
 } calibration_state_t;
 
 typedef enum {
-  // The orchestrator hasnt been started yet
+  // The orchestrator hasn't been started yet
   CALIBRATION_NOT_STARTED,
   // Indicate the user that a new task is starting
   STARTING_TASK,
@@ -62,4 +62,4 @@ void calibration_orchestrator_set_unscheduling_id(uint16_t id);
  */
 void calibration_orchestrator_run();
 
-#endif // CALIBRATION_ORCHESTRATOR_H
+#endif // !CALIBRATION_ORCHESTRATOR_H

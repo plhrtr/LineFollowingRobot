@@ -43,6 +43,10 @@ static void play_sound(uint16_t frequency, uint32_t duration) {
   TIM1->CCR3 = 0;
 }
 
+/*****************
+ * START UP SOUND
+ *****************/
+
 #define START_UP_MELODY_LENGTH 8
 
 static const uint16_t start_up_theme_frequencies[START_UP_MELODY_LENGTH] = {
@@ -58,6 +62,10 @@ void sound_service_start_up_sound() {
     play_sound(0, 50);
   }
 };
+
+/********************
+ * LOW BATTERY SOUND
+ *******************/
 
 #define LOW_BATTERY_MELODY_LENGTH 2
 

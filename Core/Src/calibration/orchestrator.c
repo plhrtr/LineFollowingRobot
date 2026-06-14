@@ -22,9 +22,14 @@ static uint16_t touch_sensor_unsubscribe_id;
 static void touch_sensor_callback() { touch_sensor_middle_pressed = 1; }
 
 static const orchestrator_task_t tasks[] = {
-    {"wheel_enc", &wheel_encoder_calibrate,
-     &wheel_encoder_calibrator_get_state},
-    {"line", &line_sensor_calibrate, &line_sensor_calibrator_get_state}};
+    // Calibration task for the wheel encoder
+    {.name = "wheel_enc",
+     .task_run = &wheel_encoder_calibrate,
+     .get_state = &wheel_encoder_calibrator_get_state},
+    // Calibration task for the line sensor
+    {.name = "line",
+     .task_run = &line_sensor_calibrate,
+     .get_state = &line_sensor_calibrator_get_state}};
 
 static size_t tasks_len = sizeof(tasks) / sizeof(tasks[0]);
 
@@ -39,13 +44,13 @@ void calibration_orchestrator_run() {
   case CALIBRATION_NOT_STARTED:
     orchestrator_previous_state_tick = HAL_GetTick();
 
-    // Subscribte to the touch sensor to recognize middle presses
+    // Subscribe to the touch sensor to recognize middle presses
     touch_sensor_subscription_t subscription = {&touch_sensor_callback,
                                                 TOUCH_SENSOR_MIDDLE};
     touch_sensor_unsubscribe_id = touch_sensor_subscribe(subscription);
 
     // Check the battery limit
-    if (adc[BATTERY] < 3100) {
+    if (adc[BATTERY] < 3000) {
       sound_service_low_battery_sound();
     }
 
@@ -71,11 +76,9 @@ void calibration_orchestrator_run() {
       tasks[current_task_idx].task_run();
     } else {
       if (current_task_state == FAILED) {
-
         led_on(LED_LEFT);
         led_off(LED_RIGHT);
       } else {
-
         led_on(LED_LEFT);
         led_on(LED_RIGHT);
       }

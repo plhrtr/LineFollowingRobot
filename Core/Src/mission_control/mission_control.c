@@ -1,6 +1,7 @@
 #include "mission_control/mission_control.h"
 #include "mission_control/handlers/line_following.h"
 #include "mission_control/handlers/line_searching.h"
+#include "mission_control/handlers/obstacle_avoidance.h"
 #include "mission_control/handlers/waypoint_navigation.h"
 #include "services/motor_service.h"
 #include "services/touch_sensor_service.h"
@@ -9,10 +10,12 @@
 #include <stdint.h>
 
 const uint16_t MISSION_CONTROL_PERIOD = 5;
-static const uint32_t RESET_PAUSE_TIME = 2000;
 
+// The current state the mission control is in
 static mission_control_state_t current_state = WAYPOINT_NAVIGATION;
 
+// Variable to handle reset while in mission control
+static const uint32_t RESET_PAUSE_TIME = 2000;
 static volatile bool reset_flag = false;
 static volatile uint32_t reset_start = 0;
 static void reset() {
@@ -39,7 +42,7 @@ void mission_control_run() {
       line_following_run();
       break;
     case OBSTACLE_AVOIDANCE:
-      // TODO: Use the waypoint navigator
+      obstacle_avoidance_run();
       break;
     }
   } else {
@@ -48,7 +51,7 @@ void mission_control_run() {
       current_state = WAYPOINT_NAVIGATION;
 
       // Reset all handlers
-      waypoint_navigation_reset();
+      waypoint_navigation_set_default();
       line_searching_reset();
     }
   }

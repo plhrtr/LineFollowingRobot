@@ -1,5 +1,5 @@
-# Mobile_Roboter
-Codebase for the 'Mobile Roboter' course
+# STM32 based line following robot
+Codebase for the 'Mobile Roboter' course at KIT
 
 # Building and flashing the project 
 
@@ -36,6 +36,8 @@ continue
 # Logging inside the project
 
 ``` C 
+// INFO: The logger is currently not in use 
+
 // Each file defines log modules, 
 // consisting of a name and a flag whether logging for this module is enabled. 
 // This log module is passed when logging a message 
@@ -52,7 +54,7 @@ static const log_module_t foo = {
 logger_init(LOG_DEBUG, CSV, UART);
 // Or use the default values (LOG_WARNING, PLAIN_TEXT, UART)
 
-// Use the makro do log a message. The message is a formatted string
+// Use the makro to log a message. The message is a formatted string
 // This will append the time, filename and line number for you
 LOGGER_LOG(LOG_DEBUG, foo, "Foo: %s, %u", var1, var2);
 ```

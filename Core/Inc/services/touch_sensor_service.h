@@ -10,8 +10,11 @@ typedef enum {
   TOUCH_SENSOR_RIGHT = 4,
 } touch_sensor_t;
 
+/**
+ * Defines a subscription to the touch sensor
+ */
 typedef struct {
-  // The callback function for the subscrition
+  // The callback function for the subscription
   void (*callback)();
   // The sensor you want to subscribe to. Use | to subscribe to multiple
   // sensors. Subscribing to multiple sensors means at least one of them has to

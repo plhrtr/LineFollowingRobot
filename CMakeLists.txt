@@ -71,6 +71,7 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     Core/Src/mission_control/handlers/waypoint_navigation.c
     Core/Src/mission_control/handlers/line_following.c
     Core/Src/mission_control/handlers/line_searching.c
+    Core/Src/mission_control/handlers/obstacle_avoidance.c
 )
 
 # Add include paths

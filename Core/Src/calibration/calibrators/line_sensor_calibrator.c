@@ -3,11 +3,10 @@
 #include "services/adc_service.h"
 #include "services/line_sensor_service.h"
 #include "stm32l4xx_hal.h"
-#include "usart.h"
 #include <stdint.h>
-#include <stdio.h>
 
 static const uint32_t CALIBRATION_PERIOD = 3000;
+
 static line_sensor_thresholds_t thresholds = {0};
 static uint32_t calibration_previous_state_tick = 0;
 static calibration_state_t calibration_state = NOT_STARTED;
@@ -27,7 +26,7 @@ void line_sensor_calibrate() {
 
   switch (calibration_state) {
   case NOT_STARTED:
-    /* initialize min/max so mins start high and maxes start low */
+    // Initialize the threshold with the default values
     thresholds.left_lower = UINT32_MAX;
     thresholds.left_upper = 0;
     thresholds.middle_lower = UINT32_MAX;
@@ -47,7 +46,7 @@ void line_sensor_calibrate() {
     uint32_t right = adc[LINE_SENSOR_RIGHT];
     update_min_max(right, &thresholds.right_upper, &thresholds.right_lower);
 
-    // Calibration period is over
+    // Check if the calibration period is over
     if ((current_tick - calibration_previous_state_tick) >=
         CALIBRATION_PERIOD) {
       line_sensor_set_thresholds(thresholds);

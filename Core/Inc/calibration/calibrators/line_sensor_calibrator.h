@@ -16,4 +16,4 @@ void line_sensor_calibrate();
  */
 calibration_state_t line_sensor_calibrator_get_state();
 
-#endif // LINE_SENSOR_CALIBRATOR_H
+#endif // !LINE_SENSOR_CALIBRATOR_H

@@ -4,11 +4,10 @@
 #include "stm32l4xx_hal_gpio.h"
 #include <stdint.h>
 
-static struct led_config_t {
+typedef struct {
   GPIO_TypeDef *port;
   uint16_t pin;
-};
-typedef struct led_config_t led_config_t;
+} led_config_t;
 
 static led_config_t get_config(led_t led) {
   led_config_t config;
@@ -30,16 +29,16 @@ static led_config_t get_config(led_t led) {
 };
 
 void led_toggle(led_t led) {
-  struct led_config_t config = get_config(led);
+  led_config_t config = get_config(led);
   HAL_GPIO_TogglePin(config.port, config.pin);
 }
 
 void led_on(led_t led) {
-  struct led_config_t config = get_config(led);
+  led_config_t config = get_config(led);
   HAL_GPIO_WritePin(config.port, config.pin, GPIO_PIN_SET);
 }
 
 void led_off(led_t led) {
-  struct led_config_t config = get_config(led);
+  led_config_t config = get_config(led);
   HAL_GPIO_WritePin(config.port, config.pin, GPIO_PIN_RESET);
 }

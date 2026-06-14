@@ -52,13 +52,4 @@ typedef struct {
   int8_t right;
 } speed_t;
 
-void set_left_motor_speed(int8_t speed);
-
-void set_right_motor_speed(int8_t speed);
-
-/**
- * Get the current set speed of the motors
- */
-speed_t motors_get_speed();
-
-#endif /// MOTOR_SERVICE_H
+#endif // !MOTOR_SERVICE_H

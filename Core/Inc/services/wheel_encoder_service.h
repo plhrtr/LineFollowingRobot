@@ -1,8 +1,11 @@
-#ifndef WHEELL_ENCODER_SERVICE_H
-#define WHEELL_ENCODER_SERVICE_H
+#ifndef WHEEL_ENCODER_SERVICE_H
+#define WHEEL_ENCODER_SERVICE_H
 
 #include <stdint.h>
 
+/**
+ * Holds the driven distance in segments per wheel
+ */
 typedef struct {
   // The travelled distance of the left wheel.
   // Moving backwards also counts towards the distance.
@@ -47,4 +50,4 @@ distance_t wheel_encoder_get_current_distance();
  */
 void wheel_encoder_reset();
 
-#endif // WHELL_ENCODER_SERVICE_H
+#endif // !WHEEL_ENCODER_SERVICE_H

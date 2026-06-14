@@ -17,4 +17,4 @@ void wheel_encoder_calibrate();
  */
 calibration_state_t wheel_encoder_calibrator_get_state();
 
-#endif // WHEEL_ENCODER_CALIBRATOR_H
+#endif // !WHEEL_ENCODER_CALIBRATOR_H

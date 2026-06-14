@@ -8,11 +8,13 @@
 
 #define MAX_SUBSCRIPTIONS sizeof(uint32_t) * 8
 
+static const uint8_t JITTER_THRESHOLD = 50;
+
 static touch_sensor_subscription_t subscriptions[MAX_SUBSCRIPTIONS];
 static uint32_t subscriptions_bitmap = 0;
 
-static const uint8_t JITTER_THRESHOLD = 50;
-
+// Last pressed time to add a cool down till new presses are recognized
+// To avoid jitter
 static uint32_t last_left_sensor_press = 0;
 static uint32_t last_middle_sensor_press = 0;
 static uint32_t last_right_sensor_press = 0;

@@ -9,23 +9,22 @@
 #include <stddef.h>
 #include <stdint.h>
 
-/* Calibration parameters */
+// Numerator and de-numerator representation of the schmitt trigger dead band
+// zone
+#define DEAD_BAND_NUM 2u
+#define DEAD_BAND_DEN 100u
+
 static const uint32_t CALIBRATION_DURATION = 500;
 
-/* Dead-band expressed as rational  */
-#define DEAD_BAND_NUM 2u
-#define DEAD_BAND_DEN 100u /* 2% = 2/100 */
-
-/* State tracking */
 static uint32_t calibration_previous_state_tick = 0;
 static calibration_state_t calibration_state = NOT_STARTED;
 
-/* Encoder range accumulators */
 static uint32_t left_encoder_max = 0;
 static uint32_t left_encoder_min = UINT32_MAX;
 static uint32_t right_encoder_max = 0;
 static uint32_t right_encoder_min = UINT32_MAX;
 
+// Drive a square to verify whether the verification was successful
 static waypoint_navigation_task_t verificiation_task[] = {
     {DRIVE_STRAIGHT, 200, 0}, {TURN_LEFT, 90, 0},
     {DRIVE_STRAIGHT, 200, 0}, {TURN_LEFT, 90, 0},
@@ -33,7 +32,13 @@ static waypoint_navigation_task_t verificiation_task[] = {
     {DRIVE_STRAIGHT, 200, 0}, {TURN_LEFT, 90, 0},
 };
 
+// Flag holding whether the waypoint navigator has finished
 static volatile bool verification_finished = false;
+
+/**
+ * Callback that sets the verification finished flag on the finish of the
+ * waypoint navigator
+ */
 static void on_waypoint_finish() { verification_finished = true; }
 
 static inline void update_min_max(uint32_t value, uint32_t *max,

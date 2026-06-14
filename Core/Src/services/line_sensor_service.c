@@ -1,14 +1,11 @@
 #include "services/line_sensor_service.h"
 #include "services/adc_service.h"
-#include "services/motor_service.h"
-#include "stm32l4xx_hal.h"
 #include "usart.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 
-// Line Sensor: Higher values means more on black
-// TODO: Detect abrupt line ending
+// INFO: Line Sensor: Higher values means more on black
 
 typedef struct {
   uint32_t left_sensor_value;
@@ -48,6 +45,9 @@ static float normalize(uint32_t value, uint32_t lower, uint32_t upper) {
   return normalized;
 }
 
+/**
+ * Debug method to print the readings and error via UART
+ */
 static void debug_print(float error, float left_n, float middle_n,
                         float right_n) {
   char buf[50];
@@ -141,12 +141,16 @@ float line_sensor_get_error() {
   float right_n = normalize(new_reading.right_sensor_value,
                             thresholds.right_lower, thresholds.right_upper);
 
+  // Check whether the robot is on the line
   is_on_line = (left_n > 0.2f) && (middle_n > 0.7f) && (right_n > 0.2f);
 
+  // Smaller threshold for a re-found line after the line ended abruptly
   if (left_n > 0.25f || middle_n > 0.25f || right_n > 0.25f) {
     line_ended_abruptly = false;
   }
 
+  // Check whether the line ended abruptly (small error, but reading of middle
+  // sensor is relatively low)
   if (middle_n < 0.6f && last_error < LINE_ENDED_ABRUPTLY_LAST_ERROR &&
       last_error > -LINE_ENDED_ABRUPTLY_LAST_ERROR) {
     line_ended_abruptly = true;

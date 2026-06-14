@@ -23,10 +23,14 @@ typedef enum {
 // The scheduling period for the mission control
 extern const uint16_t MISSION_CONTROL_PERIOD;
 
-// Initialize the mission control
+/**
+ * Initialize the mission control
+ */
 void mission_control_init();
 
-// Run function to schedule the mission control
+/**
+ * Run function to schedule the mission control
+ */
 void mission_control_run();
 
 /**
@@ -35,7 +39,9 @@ void mission_control_run();
  */
 void mission_control_set_state(mission_control_state_t state);
 
-// Get the state of the mission control
+/**
+ * Get the state of the mission control
+ */
 mission_control_state_t mission_control_get_state();
 
 #endif // !MISSION_CONTROL_H

@@ -1,21 +1,17 @@
-
 #include "services/motor_service.h"
 #include "main.h"
-#include "stm32l4xx_hal.h"
 #include "stm32l4xx_hal_gpio.h"
 #include "stm32l4xx_hal_tim_ex.h"
 #include "tim.h"
 #include <stdint.h>
 #include <stdlib.h>
 
-/**
- * Flag whether the motors have been initialized.
- */
+// Flag whether the motors have been initialized.
 static int motors_initialized;
 
 static speed_t curr_speed = {0, 0};
 
-void set_left_motor_speed(int8_t speed) {
+static void set_left_motor_speed(int8_t speed) {
   if (speed < -100 || speed > 100)
     return;
 
@@ -32,7 +28,7 @@ void set_left_motor_speed(int8_t speed) {
   }
 }
 
-void set_right_motor_speed(int8_t speed) {
+static void set_right_motor_speed(int8_t speed) {
   if (speed < -100 || speed > 100)
     return;
 
@@ -102,5 +98,3 @@ int motors_drive_curve(int8_t speed, uint8_t sharpness, direction_t direction) {
 
   return 1;
 };
-
-speed_t motors_get_speed() { return curr_speed; }
