@@ -9,7 +9,7 @@
 
 #define SEGMENTS_PER_MM 0.1909859318f
 #define SEGMENTS_PER_DEGREE 0.1333333334f
-#define PAUSE_TIME 250U
+#define PAUSE_TIME 200U
 
 // INFO: Substract 80mm from the last distance for better sensor fitting
 
@@ -43,26 +43,26 @@ static void initialize_task(waypoint_navigation_task_t *task,
 
   switch (task->type) {
   case DRIVE_STRAIGHT:
-    motors_drive_straight(65);
+    motors_drive_straight(60);
     added_segments = (uint32_t)(SEGMENTS_PER_MM * (float)task->value + 0.5f);
     task->goal_distance_left = curr_distance->distance_left + added_segments;
     task->goal_distance_right = curr_distance->distance_right + added_segments;
     break;
   case DRIVE_BACKWARDS:
-    motors_drive_straight(-65);
+    motors_drive_straight(-60);
     added_segments = (uint32_t)(SEGMENTS_PER_MM * (float)task->value + 0.5f);
     task->goal_distance_left = curr_distance->distance_left + added_segments;
     task->goal_distance_right = curr_distance->distance_right + added_segments;
     break;
   case TURN_LEFT:
-    motors_drive_curve(50, 100, LEFT);
+    motors_drive_curve(40, 100, LEFT);
     added_segments =
         (uint32_t)(SEGMENTS_PER_DEGREE * (float)task->value + 0.5f);
     task->goal_distance_left = curr_distance->distance_left + added_segments;
     task->goal_distance_right = curr_distance->distance_right + added_segments;
     break;
   case TURN_RIGHT:
-    motors_drive_curve(50, 100, RIGHT);
+    motors_drive_curve(40, 100, RIGHT);
     added_segments =
         (uint32_t)(SEGMENTS_PER_DEGREE * (float)task->value + 0.5f);
     task->goal_distance_left = curr_distance->distance_left + added_segments;

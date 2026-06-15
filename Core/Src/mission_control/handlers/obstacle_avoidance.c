@@ -6,8 +6,8 @@
 // TODO:
 static waypoint_navigation_task_t obstacle_avoidance_tasks[] = {
     {DRIVE_BACKWARDS, 30, 0}, {TURN_RIGHT, 45, 0},
-    {DRIVE_STRAIGHT, 200, 0}, {TURN_LEFT, 80, 0},
-    {DRIVE_STRAIGHT, 250, 0}, {TURN_RIGHT, 55, 0},
+    {DRIVE_STRAIGHT, 220, 0}, {TURN_LEFT, 80, 0},
+    {DRIVE_STRAIGHT, 260, 0}, {TURN_RIGHT, 35, 0},
 };
 
 /**

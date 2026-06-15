@@ -105,7 +105,7 @@ static float calculate_error(line_sensor_reading_t reading) {
       normalize(reading.right_sensor_value, thresholds.right_lower,
                 thresholds.right_upper);
 
-  float numerator = (-2.5f * left_normalized) + (2.5f * right_normalized);
+  float numerator = (-2.0f * left_normalized) + (2.0f * right_normalized);
   float denominator = left_normalized + middle_normalized + right_normalized;
 
   if (denominator <= 0.0f) {
@@ -142,16 +142,15 @@ float line_sensor_get_error() {
                             thresholds.right_lower, thresholds.right_upper);
 
   // Check whether the robot is on the line
-  is_on_line = (left_n > 0.2f) && (middle_n > 0.7f) && (right_n > 0.2f);
+  is_on_line = middle_n > 0.6f;
 
-  // Smaller threshold for a re-found line after the line ended abruptly
-  if (left_n > 0.25f || middle_n > 0.25f || right_n > 0.25f) {
+  if (is_on_line) {
     line_ended_abruptly = false;
   }
 
   // Check whether the line ended abruptly (small error, but reading of middle
   // sensor is relatively low)
-  if (middle_n < 0.6f && last_error < LINE_ENDED_ABRUPTLY_LAST_ERROR &&
+  if (middle_n < 0.55f && last_error < LINE_ENDED_ABRUPTLY_LAST_ERROR &&
       last_error > -LINE_ENDED_ABRUPTLY_LAST_ERROR) {
     line_ended_abruptly = true;
     return 0.0f;
