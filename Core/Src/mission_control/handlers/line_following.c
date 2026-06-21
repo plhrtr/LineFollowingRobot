@@ -1,5 +1,6 @@
 #include "mission_control/handlers/line_following.h"
 #include "mission_control/handlers/line_searching.h"
+#include "mission_control/handlers/obstacle_avoidance.h"
 #include "mission_control/mission_control.h"
 #include "services/led_service.h"
 #include "services/line_sensor_service.h"
@@ -37,6 +38,7 @@ static int clamp_int(int value) {
  */
 static void on_obstacle_detected() {
   unsubscribe_touch_sensor();
+  obstacle_avoidance_init();
   mission_control_set_state(OBSTACLE_AVOIDANCE);
 }
 

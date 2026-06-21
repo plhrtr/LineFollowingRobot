@@ -2,6 +2,11 @@
 #define OBSTACLE_AVOIDANCE_H
 
 /**
+ * Initialize the obstacle avoidance task
+ */
+void obstacle_avoidance_init();
+
+/**
  * Run the obstacle avoidance handler.
  * Executes a predefined route to avoid the obstacle.
  */

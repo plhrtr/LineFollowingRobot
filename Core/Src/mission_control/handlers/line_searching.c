@@ -42,10 +42,10 @@ void line_searching_run() {
   switch (search_state) {
   case SEARCH_STATE_FORWARD:
     if (goal_distance == 0) {
+      motors_drive_straight(80);
       goal_distance += 20 * SEGMENTS_PER_MM;
     } else if (wheel_encoder_get_current_distance().distance_left >=
                goal_distance) {
-      motors_stop();
       search_state = SEARCH_STATE_SEARCH;
       switch (start_direction) {
       case SEARCH_LEFT:

@@ -2,6 +2,7 @@
 #include "mission_control/handlers/line_following.h"
 #include "mission_control/mission_control.h"
 #include "services/line_sensor_service.h"
+#include "services/motor_service.h"
 #include "services/wheel_encoder_service.h"
 #include <stdint.h>
 
@@ -19,6 +20,7 @@ void overcome_gap_run() {
   }
 
   if (goal_distance == 0) {
+    motors_drive_straight(80);
     goal_distance = wheel_encoder_get_current_distance().distance_left +
                     130 * SEGMENTS_PER_MM;
   } else if (wheel_encoder_get_current_distance().distance_left >=

@@ -17,10 +17,11 @@ static void on_finish_obstacle_avoidance() {
   mission_control_set_state(LINE_SEARCHING);
 }
 
-void obstacle_avoidance_run() {
+void obstacle_avoidance_init() {
   waypoint_navigation_set_tasks(obstacle_avoidance_tasks,
                                 sizeof(obstacle_avoidance_tasks) /
                                     sizeof(waypoint_navigation_task_t),
                                 &on_finish_obstacle_avoidance);
-  mission_control_set_state(YELLOW_LINE_FOLLOWING);
 }
+
+void obstacle_avoidance_run() { waypoint_navigation_run(); }
