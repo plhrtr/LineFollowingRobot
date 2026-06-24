@@ -6,11 +6,11 @@
 // INFO: Subtract 40mm from the last distance for better sensor alignment at the
 // end
 
-static waypoint_navigation_task_t yellow_line_tasks[] = {{DRIVE_STRAIGHT, 425},
+static waypoint_navigation_task_t yellow_line_tasks[] = {{DRIVE_STRAIGHT, 500},
                                                          {TURN_RIGHT, 150},
-                                                         {DRIVE_STRAIGHT, 250},
-                                                         {TURN_LEFT, 45},
-                                                         {DRIVE_STRAIGHT, 160}};
+                                                         {DRIVE_STRAIGHT, 433},
+                                                         {TURN_LEFT, 90},
+                                                         {DRIVE_STRAIGHT, 205}};
 
 /**
  * Callback that gets executed when the tasks are finished

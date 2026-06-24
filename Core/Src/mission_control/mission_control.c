@@ -17,27 +17,30 @@ void mission_control_init() { yellow_line_following_init(); }
 void mission_control_run() {
   switch (current_state) {
   case YELLOW_LINE_FOLLOWING:
+    // Always transitions to [LINE_SEARCHING]
     yellow_line_following_run();
-    // Always transitions to line searching
     break;
   case LINE_SEARCHING:
-    // If a line is found in the search range -> Switch to line following
-    // If not overcome gap
+    // If a line is found -> Switch to [LINE_FOLLOWING]
+    // If not transitions to [OVERCOME_GAP]
     line_searching_run();
     break;
   case LINE_FOLLOWING:
-    // If the line is lost transitions to line searching
-    // If a touch sensor press is detected transitions to obstacle_avoidance
+    // If the line is lost transitions to [LINE_SEARCHING]
+    // If a touch sensor press is detected transitions to [OBSTACLE_AVOIDANCE]
     line_following_run();
     break;
   case OBSTACLE_AVOIDANCE:
-    // Always transitions to line searching
+    // Always transitions to [LINE_SEARCHING]
     obstacle_avoidance_run();
     break;
   case OVERCOME_GAP:
-    // transitions to line following if line is found
-    // If not transitions after specified travel distance to Line searching
+    // If a line is found -> Switch to [LINE_FOLLOWING]
+    // If not transitions after specified travel distance to [LINE_SEARCHING]
     overcome_gap_run();
+    break;
+  default:
+    mission_control_set_state(LINE_SEARCHING);
     break;
   }
 }

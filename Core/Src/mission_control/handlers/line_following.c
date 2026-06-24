@@ -9,10 +9,10 @@
 #include <stdint.h>
 
 // Controller tuning constants
-static const uint16_t P_VALUE = 70;
+static const uint16_t P_VALUE = 50;
 
 // General tuning constants
-static const float JITTER_THRESHOLD = 2.0f;
+static const float JITTER_THRESHOLD = 3.0f;
 
 static int touch_sensor_unsubscribe_id = -1;
 

@@ -8,7 +8,7 @@
 
 static const float SEGMENTS_PER_MM = 0.1909859318f;
 static const float SEGMENTS_PER_DEGREE = 0.1333333334f;
-static const uint16_t PAUSE_TIME = 150;
+static const uint16_t PAUSE_TIME = 200;
 
 static int32_t current_task_index = -1;
 static bool is_pause = false;
@@ -24,7 +24,7 @@ static void initialize_task(waypoint_navigation_task_t *task,
 
   switch (task->type) {
   case DRIVE_STRAIGHT:
-    motors_drive_straight(60);
+    motors_drive_straight(80);
     added_segments = (uint32_t)(SEGMENTS_PER_MM * (float)task->value + 0.5f);
     task->goal_distance_left = curr_distance->distance_left + added_segments;
     task->goal_distance_right = curr_distance->distance_right + added_segments;
@@ -36,14 +36,14 @@ static void initialize_task(waypoint_navigation_task_t *task,
     task->goal_distance_right = curr_distance->distance_right + added_segments;
     break;
   case TURN_LEFT:
-    motors_drive_curve(40, 100, LEFT);
+    motors_drive_curve(50, 100, LEFT);
     added_segments =
         (uint32_t)(SEGMENTS_PER_DEGREE * (float)task->value + 0.5f);
     task->goal_distance_left = curr_distance->distance_left + added_segments;
     task->goal_distance_right = curr_distance->distance_right + added_segments;
     break;
   case TURN_RIGHT:
-    motors_drive_curve(40, 100, RIGHT);
+    motors_drive_curve(50, 100, RIGHT);
     added_segments =
         (uint32_t)(SEGMENTS_PER_DEGREE * (float)task->value + 0.5f);
     task->goal_distance_left = curr_distance->distance_left + added_segments;
