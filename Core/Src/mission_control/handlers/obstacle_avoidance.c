@@ -8,7 +8,7 @@
 #include "stm32l4xx_hal.h"
 #include <stdint.h>
 
-static const uint32_t SEARCH_TIMEOUT = 5000;
+static const uint32_t SEARCH_TIMEOUT = 3000;
 
 typedef enum {
   OBSTACLE_AVOIDANCE_INIT,
