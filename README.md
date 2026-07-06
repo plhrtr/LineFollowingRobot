@@ -1,5 +1,10 @@
+
+
 # STM32 based line following robot
 Codebase for the 'Mobile Roboter' course at KIT
+
+# Showcase 
+https://github.com/user-attachments/assets/14f763b7-3408-4699-a73a-9ac12e37a10b
 
 # Building and flashing the project 
 
