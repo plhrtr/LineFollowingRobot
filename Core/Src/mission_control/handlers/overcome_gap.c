@@ -14,8 +14,6 @@ void overcome_gap_run() {
   // If on the line continue in line following task
   line_sensor_get_error();
   if (line_sensor_is_on_line()) {
-    goal_distance = 0;
-    line_following_init();
     mission_control_set_state(LINE_FOLLOWING);
   }
 

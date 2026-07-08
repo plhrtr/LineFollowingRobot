@@ -15,7 +15,7 @@ typedef enum {
   SEARCH_STATE_BREAK
 } search_state_t;
 
-static const uint32_t SEARCH_DURATION = 500;
+static const uint32_t SEARCH_DURATION = 400;
 static const uint32_t BREAK_DURATION = 200;
 
 static search_state_t search_state = SEARCH_STATE_INIT;
@@ -70,7 +70,7 @@ void line_searching_run() {
   case SEARCH_STATE_BREAK:
     if ((int32_t)(now - start_time) >= 0) {
       if (pending_state == SEARCH_STATE_SECOND) {
-        start_time = now + 2 * SEARCH_DURATION;
+        start_time = now + 1.8f * SEARCH_DURATION;
         search_state = SEARCH_STATE_SECOND;
         switch (start_direction) {
         case SEARCH_LEFT:

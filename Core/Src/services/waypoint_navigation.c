@@ -24,7 +24,7 @@ static void initialize_task(waypoint_navigation_task_t *task,
 
   switch (task->type) {
   case DRIVE_STRAIGHT:
-    motors_drive_straight(80);
+    motors_drive_straight(90);
     added_segments = (uint32_t)(SEGMENTS_PER_MM * (float)task->value + 0.5f);
     task->goal_distance_left = curr_distance->distance_left + added_segments;
     task->goal_distance_right = curr_distance->distance_right + added_segments;

@@ -8,7 +8,7 @@
 #include "stm32l4xx_hal.h"
 #include <stdint.h>
 
-static const uint32_t SEARCH_TIMEOUT = 3000;
+static const uint32_t SEARCH_TIMEOUT = 2000;
 
 typedef enum {
   OBSTACLE_AVOIDANCE_INIT,
@@ -22,15 +22,15 @@ obstacle_avoidance_states_t state = OBSTACLE_AVOIDANCE_INIT;
 static waypoint_navigation_task_t obstacle_avoidance_tasks[] = {
     {DRIVE_BACKWARDS, 30},
     {TURN_RIGHT, 90},
-    {DRIVE_STRAIGHT, 110},
+    {DRIVE_STRAIGHT, 120},
     {TURN_LEFT, 90},
-};
+    {DRIVE_STRAIGHT, 50}};
 
 /**
  * Callback that gets executed when the waypoint navigation finishes
  */
 static void on_finish_obstacle_avoidance() {
-  motors_drive_curve(80, 10, LEFT);
+  motors_drive_curve(80, 15, LEFT);
   state = OBSTACLE_AVOIDANCE_SEARCH;
 }
 static uint32_t search_start = 0;
