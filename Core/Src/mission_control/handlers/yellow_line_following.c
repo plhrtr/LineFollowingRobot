@@ -9,8 +9,8 @@
 static waypoint_navigation_task_t yellow_line_tasks[] = {{DRIVE_STRAIGHT, 590},
                                                          {TURN_RIGHT, 90},
                                                          {DRIVE_STRAIGHT, 310},
-                                                         {TURN_RIGHT, 110},
-                                                         {DRIVE_STRAIGHT, 345}};
+                                                         {TURN_RIGHT, 108},
+                                                         {DRIVE_STRAIGHT, 340}};
 
 /**
  * Callback that gets executed when the tasks are finished
